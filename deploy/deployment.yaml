@@ -1,31 +1,27 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
+  name: my-app-2
   labels:
-    service: reverseproxy
-  name: reverseproxy
+    app: my-app-2
 spec:
   replicas: 1
   selector:
     matchLabels:
-      app: reverseproxy
+      app: my-app-2
   template:
     metadata:
       labels:
-        service: reverseproxy
-        app: reverseproxy
+        app: my-app-2
     spec:
       containers:
-        - image: omogbare/simple-express
-          name: reverseproxy
-          imagePullPolicy: Always
-          resources:
-            requests:
-              memory: "64Mi"
-              cpu: "250m"
-            limits:
-              memory: "1024Mi"
-              cpu: "500m"
+        - name: simple-express
+          image: omogbare/simple-express
           ports:
             - containerPort: 8080
-      restartPolicy: Always
+          livenessProbe:
+            httpGet:
+              path: /health
+              port: 8080
+            initialDelaySeconds: 3
+            periodSeconds: 3
