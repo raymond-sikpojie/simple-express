@@ -15,9 +15,9 @@ before_script:
 
 script:
   - docker --version # print the version for logging
-  - docker build -t simple-express .
-  - docker tag simple-express omogbare/simple-express:latest
+  - docker build -t reverse-proxy .
+  - docker tag simple-express omogbare/reverse-proxy:latest
 
 after_success:
   - echo "$DOCKER_PASSWORD" | docker login -u "$DOCKER_USERNAME" --password-stdin
-  - docker push omogbare/simple-express:latest
+  - docker push omogbare/reverse-proxy:latest
